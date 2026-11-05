@@ -1,0 +1,39 @@
+{
+  "source_url": "https://lofranotecnologia.com.br/modelos/vertice",
+  "captured_on": "2026-11-05",
+  "source_kind": "published public client artifacts; not original TypeScript export",
+  "rea_parent_evidence_id": "ev_daf5e1ffd78836fade52342d19ca484617839066256de70060e40ac9687ab909",
+  "public_js": {
+    "SectorModel-B4RDUdD1.js": "ae79b2fc99e88812bfdca3d69607aae6b481b10fd0a7e0ba59e99cbdeed786b9",
+    "showcase-C2URqZ0w.js": "5853a108054acfb3b6b7d077b25f392b8ab376cbb48cca6629aa2a593f040111",
+    "demo-context-ixc6DCXP.js": "528ce44dc3c0dbc72a970b721c0ad61691e7a8601657c2ce276ec4ef99909cd0"
+  },
+  "source_component": "VerticeDemo",
+  "reconstruction": "lexical AST dependencies; scoped renames; JSX recovery; local assets; selected inherited CSS",
+  "private_sources_included": false,
+  "known_runtime_changes": [
+    "standalone distribution shell and reset",
+    "asset imports relative to deploy base"
+  ],
+  "asset_hashes": {
+    "lofrano.svg": "81a36eaba62b984ef613ac831a94cd446ccf970a03f5b1701cef67b2c1dead2c",
+    "icons.svg": "b04c41c524252d98752de059d9c5a70b98dcbdcea51c806af7cd22a27fb5ff30",
+    "manrope.woff2": "a30ddcd349703aff7464c34bef3fffdff405ee50c113440d7c8693c02d210972",
+    "dm-sans.woff2": "9fea608a947e67020c33cad9a6fe3d60c54119dfb8cff87768a8117a15ed7543"
+  },
+  "public_styles": {
+    "index.BYzIxk3w.css": {
+      "url": "https://lofranotecnologia.com.br/_next/static/css/index.BYzIxk3w.css",
+      "sha256": "f6562d305aab2832ec521237cc6ceb94f8489bebc42dbe249aa4e294a3654aac"
+    },
+    "SectorModel.BlUcM2nh.css": {
+      "url": "https://lofranotecnologia.com.br/_next/static/css/SectorModel.BlUcM2nh.css",
+      "sha256": "bb6dc202c0487d174978450f1effa5dcf56834c9dc614abd1bf35961a109d70b"
+    },
+    "showcase.oPlkgT_J.css": {
+      "url": "https://lofranotecnologia.com.br/_next/static/css/showcase.oPlkgT_J.css",
+      "sha256": "a1842ebfe92bf390589375685936dcd13208112d50f9099658f9aabf2af005a4"
+    }
+  },
+  "runtime_licenses_in_build": true
+}
