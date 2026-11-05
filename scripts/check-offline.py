@@ -139,6 +139,18 @@ def main():
             reject("Missing scripts/check-proof.mjs")
         for name in ("node_modules", ".test-build", "dist"):
             (work / name).mkdir()
+        # A root runner's new user namespace cannot traverse the runner-owned
+        # /home directory. Stage only validated dependencies and the exact Node
+        # binary in this owned temporary root; never relax home permissions.
+        staged_dependencies = Path(directory) / "dependencies"
+        shutil.copytree(dependencies, staged_dependencies, symlinks=True)
+        if snapshot(staged_dependencies, dependency_files(staged_dependencies), allow_links=True) != dependency_hash:
+            reject("Dependencies changed while staging")
+        staged_node = Path(directory) / "node"
+        shutil.copy2(node, staged_node)
+        node_hash = hashlib.sha256(node.read_bytes()).hexdigest()
+        if hashlib.sha256(staged_node.read_bytes()).hexdigest() != node_hash:
+            reject("Node changed while staging")
         ssr, client = Path(directory) / "ssr", Path(directory) / "client"
         ssr.mkdir()
         client.mkdir()
@@ -155,8 +167,8 @@ def main():
             command += ["--ro-bind", "/etc/ld.so.cache", "/etc/ld.so.cache"]
         command += ["--proc", "/proc", "--dev", "/dev", "--tmpfs", "/tmp",
                     "--dir", "/tmp/home", "--dir", "/tmp/config", "--dir", "/tmp/cache",
-                    "--dir", "/runtime", "--ro-bind", str(node), "/runtime/node",
-                    "--ro-bind", str(work), "/work", "--ro-bind", str(dependencies), "/work/node_modules",
+                    "--dir", "/runtime", "--ro-bind", str(staged_node), "/runtime/node",
+                    "--ro-bind", str(work), "/work", "--ro-bind", str(staged_dependencies), "/work/node_modules",
                     "--bind", str(ssr), "/work/.test-build", "--bind", str(client), "/work/dist",
                     "--clearenv", "--chdir", "/work"]
         for key, value in {"PATH": "/runtime:/usr/bin:/bin", "HOME": "/tmp/home", "TMPDIR": "/tmp",
@@ -174,6 +186,10 @@ def main():
                 reject("Original dependencies changed")
             if snapshot(work, public_files(work)) != source_hash:
                 reject("Sandbox source snapshot changed")
+            if snapshot(staged_dependencies, dependency_files(staged_dependencies), allow_links=True) != dependency_hash:
+                reject("Sandbox dependencies changed")
+            if hashlib.sha256(staged_node.read_bytes()).hexdigest() != node_hash or hashlib.sha256(node.read_bytes()).hexdigest() != node_hash:
+                reject("Node binary changed")
         if result.returncode:
             reject("Offline child failed (exit %d); no dist published. Check sandbox support and test output." % result.returncode)
         publish(client)
